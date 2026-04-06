@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 Mangrove Research — YBLP</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f0f7f2;
+  --surface: #ffffff;
+  --surface2: #f7fdf9;
+  --border: #d0e8d8;
+  --text: #1a3a24;
+  --muted: #6b9077;
+  --accent: #2d9e5f;
+  --accent-light: #e8f7ee;
+  --accent2: #1a7a45;
+  --small-color: #2563eb;
+  --small-bg: #dbeafe;
+  --medium-color: #16a34a;
+  --medium-bg: #dcfce7;
+  --large-color: #dc2626;
+  --large-bg: #fee2e2;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Nunito', sans-serif;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+
+header {
+  background: var(--surface); border-bottom: 2px solid var(--border);
+  padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow);
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg,#2d9e5f,#1a7a45); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.logo h1 { font-size: 18px; font-weight: 800; }
+.logo p { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 1px; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn { background: var(--surface2); border: 1.5px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s; display: inline-flex; align-items: center; gap: 6px; }
+.btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent2); }
+.btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.accent:hover { background: var(--accent2); }
+.btn.danger { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+.btn.danger:hover { background: #fecaca; }
+
+#saveStatus { font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 6px 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+#saveDot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+nav.tabs { background: var(--surface); border-bottom: 2px solid var(--border); display: flex; padding: 0 24px; gap: 2px; overflow-x: auto; }
+.tab { padding: 14px 18px; font-size: 13px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; color: var(--muted); transition: all .18s; white-space: nowrap; user-select: none; border-radius: 12px 12px 0 0; margin-bottom: -2px; }
+.tab:hover { color: var(--accent); background: var(--accent-light); }
+.tab.active { color: var(--accent2); border-bottom-color: var(--accent); background: var(--accent-light); }
+
+main { padding: 28px; max-width: 1440px; margin: 0 auto; }
+.panel { display: none; animation: fadeIn .2s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; } }
+
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.card-title { font-size: 11px; font-family: var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 18px; font-weight: 600; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.card-header .card-title { margin-bottom: 0; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+.stat-box { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 20px; text-align: center; }
+.stat-box .num { font-size: 36px; font-weight: 900; font-family: var(--mono); color: var(--accent2); line-height: 1; }
+.stat-box .label { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 6px; }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.badge.small { background: var(--small-bg); color: var(--small-color); }
+.badge.medium { background: var(--medium-bg); color: var(--medium-color); }
+.badge.large { background: var(--large-bg); color: var(--large-color); }
+.badge.unknown { background: #f3f4f6; color: #6b7280; }
+
+.shade-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.shade-ctrl { background: #ede9fe; color: #7c3aed; }
+.shade-30 { background: #fef3c7; color: #d97706; }
+.shade-50 { background: #cffafe; color: #0891b2; }
+.shade-75 { background: #fce7f3; color: #be185d; }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th { text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; font-family: var(--mono); font-weight: 600; background: var(--surface2); position: sticky; top: 0; }
+.data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+.data-table tr:hover td { background: var(--accent-light); }
+.data-table-wrap { overflow-y: auto; max-height: 520px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); }
+
+.filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+input[type=text], input[type=number], input[type=date], select, textarea { background: var(--surface2); border: 1.5px solid var(--border); color: var(--text); padding: 9px 14px; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 13px; font-weight: 500; outline: none; transition: border-color .18s; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,158,95,.1); }
+
+/* RCBD */
+.rcbd-grid { display: grid; grid-template-columns: repeat(10,1fr); gap: 5px; }
+.rcbd-cell { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 700; cursor: pointer; transition: transform .15s, box-shadow .15s; border: 2px solid transparent; }
+.rcbd-cell:hover { transform: scale(1.25); z-index: 10; box-shadow: var(--shadow-lg); }
+.rcbd-cell.small-seed { background: var(--small-bg); color: var(--small-color); border-color: #93c5fd; }
+.rcbd-cell.medium-seed { background: var(--medium-bg); color: var(--medium-color); border-color: #86efac; }
+.rcbd-cell.large-seed { background: var(--large-bg); color: var(--large-color); border-color: #fca5a5; }
+.rcbd-cell.germinated { outline: 3px solid #f59e0b; outline-offset: 1px; }
+
+.grid-view-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.grid-view-tab { padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1.5px solid var(--border); color: var(--muted); background: var(--surface2); transition: all .18s; }
+.grid-view-tab.active { border-color: var(--accent); color: var(--accent2); background: var(--accent-light); }
+
+.shade-section { margin-bottom: 28px; }
+.shade-label { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.shade-line { flex: 1; height: 2px; background: var(--border); border-radius: 2px; }
+
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+#tooltip { position: fixed; background: var(--surface); border: 2px solid var(--accent); border-radius: 14px; padding: 14px 18px; font-family: var(--sans); font-size: 13px; pointer-events: none; z-index: 9999; min-width: 180px; box-shadow: var(--shadow-lg); display: none; }
+#tooltip .t-id { font-size: 15px; font-weight: 800; color: var(--accent2); margin-bottom: 8px; }
+#tooltip .t-row { display: flex; justify-content: space-between; gap: 16px; margin-top: 4px; font-size: 12px; }
+#tooltip .t-key { color: var(--muted); font-weight: 600; }
+#tooltip .t-val { font-weight: 700; }
+
+/* CHIPS */
+.chip-area { display: flex; flex-wrap: wrap; gap: 6px; max-height: 220px; overflow-y: auto; padding: 12px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 18px; }
+.chip { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; font-weight: 700; cursor: pointer; transition: all .15s; border: 2px solid transparent; position: relative; }
+.chip.small { background: var(--small-bg); color: var(--small-color); }
+.chip.medium { background: var(--medium-bg); color: var(--medium-color); }
+.chip.large { background: var(--large-bg); color: var(--large-color); }
+.chip.logged { border-color: var(--accent); }
+.chip.logged::after { content:'✓'; position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; width: 14px; height: 14px; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+.chip.selected { outline: 3px solid var(--text); outline-offset: 2px; transform: scale(1.1); }
+.chip:hover { transform: scale(1.1); box-shadow: var(--shadow); }
+
+/* LOG FORM */
+.log-form-wrap { background: var(--accent-light); border: 2px solid var(--accent); border-radius: var(--radius); padding: 22px; display: none; }
+.log-form-wrap.visible { display: block; animation: fadeIn .2s ease; }
+.log-form-wrap h3 { font-size: 16px; font-weight: 800; color: var(--accent2); margin-bottom: 18px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; }
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 5px 0; }
+.checkbox-row input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+
+/* CHARTS */
+.chart-box { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.chart-title { font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+
+/* WATER LOG */
+.water-day-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 12px; }
+.water-day-card.today-card { border-color: #3b82f6; background: #eff6ff; }
+.water-date-label { font-size: 12px; font-weight: 800; font-family: var(--mono); color: var(--muted); margin-bottom: 10px; }
+.water-checklist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.water-check { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 0; }
+.water-check input[type=checkbox] { width: 16px; height: 16px; accent-color: #3b82f6; cursor: pointer; }
+.water-check.done { text-decoration: line-through; color: var(--muted); }
+
+/* SCHEDULE */
+.biweekly-steps { display: flex; flex-direction: column; gap: 10px; }
+.step-row { display: flex; gap: 14px; align-items: flex-start; padding: 12px 16px; background: var(--surface2); border-radius: 10px; border: 1.5px solid var(--border); }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-text { font-size: 13px; font-weight: 600; }
+
+/* MILESTONE */
+.milestone { display: flex; gap: 16px; align-items: center; padding: 14px 18px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 10px; }
+.milestone-week { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent2); min-width: 80px; }
+
+/* PROGRESS */
+.progress-bar { background: var(--border); border-radius: 20px; height: 10px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 20px; transition: width .5s ease; }
+
+/* RANGE CARDS */
+.range-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.range-card { border-radius: var(--radius-sm); padding: 18px; border: 2px solid; text-align: center; }
+.range-card.small { background: var(--small-bg); border-color: #93c5fd; color: var(--small-color); }
+.range-card.medium { background: var(--medium-bg); border-color: #86efac; color: var(--medium-color); }
+.range-card.large { background: var(--large-bg); border-color: #fca5a5; color: var(--large-color); }
+.range-card .dot { width: 16px; height: 16px; border-radius: 50%; margin: 0 auto 8px; }
+.range-card.small .dot { background: var(--small-color); }
+.range-card.medium .dot { background: var(--medium-color); }
+.range-card.large .dot { background: var(--large-color); }
+.range-card .rl { font-size: 11px; font-weight: 700; letter-spacing: .5px; opacity: .8; }
+.range-card .rv { font-size: 20px; font-weight: 900; font-family: var(--mono); margin: 4px 0; }
+.range-card .rc { font-size: 12px; font-weight: 700; opacity: .8; }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 500; display: none; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius); padding: 28px; max-width: 500px; width: 90%; box-shadow: var(--shadow-lg); position: relative; max-height: 85vh; overflow-y: auto; }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--muted); }
+.modal-close:hover { background: var(--large-bg); color: var(--large-color); }
+.modal h2 { font-size: 20px; font-weight: 800; color: var(--accent2); margin-bottom: 18px; }
+.modal-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.modal-row .mk { color: var(--muted); font-weight: 600; }
+.modal-row .mv { font-weight: 700; font-family: var(--mono); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🌿</div>
+    <div>
+      <h1>Mangrove Research Dashboard</h1>
+      <p>YBLP · 120 Seeds · RCBD · Bi-Weekly Measurements</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div id="saveStatus"><div id="saveDot"></div><span id="saveText">Ready</span></div>
+    <button class="btn" onclick="exportJSON()">⬇ Export JSON</button>
+    <label class="btn" style="cursor:pointer">⬆ Import JSON<input type="file" accept=".json" onchange="importJSON(event)" style="display:none"></label>
+    <button class="btn accent" onclick="exportCSV()">📊 Export CSV</button>
+    <button class="btn" onclick="pullFromCloud()" id="pullBtn" style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">☁️ Pull Data</button>
+    <button class="btn" onclick="pushToCloud()" id="pushBtn" style="background:#f0fdf4;border-color:#86efac;color:#16a34a">⬆ Push Data</button>
+  </div>
+</header>
+
+<nav class="tabs" id="mainTabs">
+  <div class="tab active" data-panel="overview">📊 Overview</div>
+  <div class="tab" data-panel="seeds">🌱 Seeds (120)</div>
+  <div class="tab" data-panel="grids">🗺 RCBD Grids</div>
+  <div class="tab" data-panel="water">💧 Daily Water Log</div>
+  <div class="tab" data-panel="log">📝 Bi-Weekly Measurements</div>
+  <div class="tab" data-panel="analytics">📈 Analytics</div>
+  <div class="tab" data-panel="schedule">📅 Schedule</div>
+</nav>
+
+<div id="tooltip"></div>
+
+<main>
+
+<!-- ===== OVERVIEW ===== -->
+<div id="panel-overview" class="panel active">
+  <div class="card">
+    <div class="card-title">Research Question</div>
+    <p style="font-size:15px;font-weight:700;line-height:1.6">To what extent does the initial seed mass (Big, Medium, Small) influence the germination rate and early growth of mangrove seeds when subjected to varying light intensities (30%, 50%, 75% shade)?</p>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px;color:var(--muted);font-weight:600"><strong>Aim:</strong> To determine if larger seeds have enough nutrient reserves to compensate for low light levels compared to smaller seeds.</div>
+  </div>
+
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="stat-box"><div class="num">120</div><div class="label">Total Seeds</div></div>
+    <div class="stat-box" style="border-color:#93c5fd"><div class="num" style="color:var(--small-color)" id="statSmall">—</div><div class="label">🔵 Small Seeds</div></div>
+    <div class="stat-box" style="border-color:#86efac"><div class="num" style="color:var(--medium-color)" id="statMedium">—</div><div class="label">🟢 Medium Seeds</div></div>
+    <div class="stat-box" style="border-color:#fca5a5"><div class="num" style="color:var(--large-color)" id="statLarge">—</div><div class="label">🔴 Large Seeds</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Seed Size Categories — Tertile Ranges</div>
+      <div class="range-cards">
+        <div class="range-card small">
+          <div class="dot"></div>
+          <div class="rl">SMALL · Blue</div>
+          <div class="rv" id="rangeSmall">—</div>
+          <div class="rc" id="rcSmall">— seeds</div>
+          <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" id="progSmall" style="background:var(--small-color)"></div></div>
+        </div>
+        <div class="range-card medium">
+          <div class="dot"></div>
+          <div class="rl">MEDIUM · Green</div>
+          <div class="rv" id="rangeMedium">—</div>
+          <div class="rc" id="rcMedium">— seeds</div>
+          <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" id="progMedium" style="background:var(--medium-color)"></div></div>
+        </div>
+        <div class="range-card large">
+          <div class="dot"></div>
+          <div class="rl">LARGE · Red</div>
+          <div class="rv" id="rangeLarge">—</div>
+          <div class="rc" id="rcLarge">— seeds</div>
+          <div class="progress-bar" style="margin-top:10px"><div class="progress-fill" id="progLarge" style="background:var(--large-color)"></div></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:10px 14px;background:var(--surface2);border-radius:10px;font-size:12px;font-weight:600;color:var(--muted);font-family:var(--mono)">
+        Method: Tertile split — each third ≈ 40 seeds for balanced analysis
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Irrigation Protocol</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <span style="padding:10px 16px;border-radius:30px;font-size:13px;font-weight:700;background:#fef3c7;color:#92400e;border:1.5px solid #fde68a">🧂 3L Salt Water (pH 7)</span>
+        <span style="padding:10px 16px;border-radius:30px;font-size:13px;font-weight:700;background:#dbeafe;color:#1e40af;border:1.5px solid #93c5fd">💧 7L Fresh Water (pH 6)</span>
+        <span style="padding:10px 16px;border-radius:30px;font-size:13px;font-weight:700;background:#f0fdf4;color:#166534;border:1.5px solid #86efac">⚗️ Mix → pH 6 · 30% salinity</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="padding:12px;background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;text-align:center">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px">WATERING</div>
+          <div style="font-size:14px;font-weight:800;color:#1d4ed8">Every Single Day 💧</div>
+        </div>
+        <div style="padding:12px;background:var(--accent-light);border:1.5px solid var(--accent);border-radius:10px;text-align:center">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px">MEASUREMENT</div>
+          <div style="font-size:14px;font-weight:800;color:var(--accent2)">Every 2 Weeks · Thursday 📏</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:600">
+        🔬 Instrument: Portable Refractometer FG-212 (±0.20% precision)
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">RCBD Experiment Design — 4 Treatment Groups</div>
+    <div class="grid-4" id="rcbdGroupCards"></div>
+    <div style="margin-top:14px;padding:12px 16px;background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;font-size:13px;font-weight:600;color:#92400e">
+      📌 <strong>RCBD Balance:</strong> 30%, 50%, and 75% shade groups each get exactly <strong>10S · 10M · 10L = 30 seeds</strong>. Control gets the dataset remainder → <strong>10S · 11M · 9L = 30 seeds</strong>. All 4 groups = 30 seeds. Total = 120.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Variables</div>
+    <div class="grid-3">
+      <div style="padding:16px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px">
+        <div style="font-size:11px;font-weight:700;color:#1e40af;margin-bottom:8px">⚡ INDEPENDENT VARIABLES</div>
+        <div style="font-size:13px;font-weight:600">Shade percentage &amp; Seed mass category</div>
+      </div>
+      <div style="padding:16px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px">
+        <div style="font-size:11px;font-weight:700;color:#166534;margin-bottom:8px">🎯 DEPENDENT VARIABLES</div>
+        <div style="font-size:13px;font-weight:600">Time to sprout (days) · Length increase (cm) · Number of leaves</div>
+      </div>
+      <div style="padding:16px;background:#fafafa;border:1.5px solid var(--border);border-radius:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">🔒 CONTROLLED</div>
+        <div style="font-size:13px;font-weight:600">Water type · Soil · pH level</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SEEDS TABLE ===== -->
+<div id="panel-seeds" class="panel">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">All 120 Seeds — Reference Table</div>
+      <span id="seedCount" style="font-size:12px;font-weight:600;color:var(--muted)"></span>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="seedSearch" placeholder="🔍 Search seed #..." style="width:180px" oninput="filterSeeds()">
+      <select id="sizeFilter" onchange="filterSeeds()">
+        <option value="">All Sizes</option>
+        <option value="small">🔵 Small</option>
+        <option value="medium">🟢 Medium</option>
+        <option value="large">🔴 Large</option>
+      </select>
+      <select id="shadeFilter" onchange="filterSeeds()">
+        <option value="">All Groups</option>
+        <option value="Control">Control</option>
+        <option value="30%">30% Shade</option>
+        <option value="50%">50% Shade</option>
+        <option value="75%">75% Shade</option>
+      </select>
+      <button class="btn" onclick="document.getElementById('seedSearch').value='';document.getElementById('sizeFilter').value='';document.getElementById('shadeFilter').value='';filterSeeds()">↺ Reset</button>
+      <button class="btn accent" onclick="exportCSV()" style="margin-left:auto">📊 Export CSV</button>
+    </div>
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Mass (g)</th><th>Length (cm)</th><th>Stage</th><th>Color</th><th>Size Category</th><th>Shade Group</th></tr></thead>
+        <tbody id="seedTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RCBD GRIDS ===== -->
+<div id="panel-grids" class="panel">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">RCBD Plot Layout — Randomized Seeding</div>
+      <div class="grid-view-tabs">
+        <div class="grid-view-tab active" id="gvt-separate" onclick="setGridView('separate')">4 Separate Groups</div>
+        <div class="grid-view-tab" id="gvt-combined" onclick="setGridView('combined')">Combined (120)</div>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--small-color)"></div> Small (Blue)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--medium-color)"></div> Medium (Green)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--large-color)"></div> Large (Red)</div>
+      <div class="legend-item"><div style="width:14px;height:14px;border-radius:50%;border:3px solid #f59e0b;background:transparent;display:inline-block"></div> Germinated</div>
+      <span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)">Hover for details · Click for full info</span>
+    </div>
+    <div id="gridContainer"></div>
+  </div>
+</div>
+
+<!-- ===== DAILY WATER LOG ===== -->
+<div id="panel-water" class="panel">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Daily Watering Log</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="font-size:13px;font-weight:600;color:var(--muted)">Week:</label>
+        <select id="waterWeekSelect" onchange="renderWaterLog()" style="width:120px">
+          <option value="1">Week 1</option><option value="2">Week 2</option>
+          <option value="3">Week 3</option><option value="4">Week 4</option>
+          <option value="5">Week 5</option><option value="6">Week 6</option>
+          <option value="7">Week 7</option><option value="8">Week 8</option>
+          <option value="9">Week 9</option><option value="10">Week 10</option>
+          <option value="11">Week 11</option><option value="12">Week 12</option>
+          <option value="13">Week 13</option><option value="14">Week 14</option>
+          <option value="15">Week 15</option><option value="16">Week 16</option>
+        </select>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;font-size:13px;font-weight:600;color:#1d4ed8;margin-bottom:18px">
+      💧 Watering happens <strong>every day</strong>. Check off the daily checklist after each watering session. Notes are optional.
+    </div>
+    <div id="waterLogContainer"></div>
+  </div>
+</div>
+
+<!-- ===== BI-WEEKLY MEASUREMENTS ===== -->
+<div id="panel-log" class="panel">
+  <div class="card">
+    <div class="card-title">Bi-Weekly Measurement Entry — Every 2nd Thursday</div>
+    <div class="filter-bar" style="align-items:center">
+      <label>Session:</label>
+      <select id="weekSelect" onchange="updateLogPanel()" style="width:180px">
+        <option value="1">Session 1 (Week 2)</option>
+        <option value="2">Session 2 (Week 4)</option>
+        <option value="3">Session 3 (Week 6)</option>
+        <option value="4">Session 4 (Week 8)</option>
+        <option value="5">Session 5 (Week 10)</option>
+        <option value="6">Session 6 (Week 12)</option>
+        <option value="7">Session 7 (Week 14)</option>
+        <option value="8">Session 8 (Week 16)</option>
+      </select>
+      <label>Group:</label>
+      <select id="logGroupFilter" onchange="renderChips()" style="width:140px">
+        <option value="">All Groups</option>
+        <option value="Control">Control</option>
+        <option value="30%">30% Shade</option>
+        <option value="50%">50% Shade</option>
+        <option value="75%">75% Shade</option>
+      </select>
+      <span id="logProgress" style="font-size:13px;font-weight:700;color:var(--accent2);margin-left:auto"></span>
+    </div>
+    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px">👆 Click a seed chip to log (✓ green = already logged this session):</div>
+    <div class="chip-area" id="seedChips"></div>
+    <div class="log-form-wrap" id="logForm">
+      <h3 id="logFormTitle">📝 Log Entry</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>📏 Stem Length (cm)</label><input type="number" id="logLength" step="0.1" placeholder="e.g. 2.5"></div>
+        <div class="form-group"><label>⚖️ Mass (g) — optional</label><input type="number" id="logMass" step="0.01" placeholder="e.g. 5.83"></div>
+        <div class="form-group"><label>🌿 Leaf Count</label><input type="number" id="logLeaves" min="0" placeholder="e.g. 2"></div>
+        <div class="form-group"><label>🌱 Germination Status</label>
+          <select id="logGermStatus">
+            <option value="Not germinated">Not germinated</option>
+            <option value="Sprouting">Sprouting</option>
+            <option value="Germinated">Germinated ✓</option>
+            <option value="Dead">Dead ✗</option>
+          </select>
+        </div>
+        <div class="form-group"><label>🧪 Treatment / Additives</label><input type="text" id="logTreatment" placeholder="e.g. none, fertilizer..."></div>
+        <div class="form-group"><label>📷 Photo</label>
+          <select id="logPhotoSelect">
+            <option value="no">No photo this session</option>
+            <option value="yes">Photo taken ✓</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:14px"><label>📝 Health Notes</label><textarea id="logNotes" rows="2" placeholder="Observations, anomalies, discoloration, root development..."></textarea></div>
+      <div style="display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap">
+        <label class="checkbox-row"><input type="checkbox" id="logHealthy"> ✅ Seed appears healthy</label>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn accent" onclick="saveLogEntry()">💾 Save Entry</button>
+        <button class="btn" onclick="clearLogForm()">↺ Clear</button>
+        <button class="btn" onclick="viewPreviousEntry()" id="viewPrevBtn" style="display:none">📋 View Previous Session</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">This Session's Summary</div>
+    <div id="logSummaryTable" style="overflow-x:auto"></div>
+  </div>
+</div>
+
+<!-- ===== ANALYTICS ===== -->
+<div id="panel-analytics" class="panel">
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="chart-box"><div class="chart-title">🌱 Germination Count by Shade Group</div><canvas id="chartGermination" height="220"></canvas></div>
+    <div class="chart-box"><div class="chart-title">📈 Avg Stem Growth Over Sessions (by group)</div><canvas id="chartGrowth" height="220"></canvas></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:20px">
+    <div class="chart-box"><div class="chart-title">📏 Avg Length by Seed Size</div><canvas id="chartBySize" height="220"></canvas></div>
+    <div class="chart-box"><div class="chart-title">✏️ Seeds Logged per Session</div><canvas id="chartLogged" height="220"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Statistics — Seed Mass by Category</div>
+    <div id="statsTable"></div>
+  </div>
+</div>
+
+<!-- ===== SCHEDULE ===== -->
+<div id="panel-schedule" class="panel">
+  <div class="card">
+    <div class="card-title">Bi-Weekly Measurement Protocol — Every 2nd Thursday</div>
+    <div class="biweekly-steps">
+      <div class="step-row"><div class="step-num">1</div><div class="step-text">Prepare all measurement tools: ruler/calipers, scale (optional), camera, and this dashboard open on a device.</div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-text">Water all 4 plots first (3L salt + 7L fresh water), check salinity with FG-212 refractometer before and after mixing.</div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-text">Measure stem length (cm) of ALL 120 seeds. Work group by group — Control → 30% → 50% → 75%. Enter each into the Bi-Weekly Log tab.</div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-text">Count leaves on all seeds that have sprouted. Record germination status for each seed (Not germinated / Sprouting / Germinated / Dead).</div></div>
+      <div class="step-row"><div class="step-num">5</div><div class="step-text">Weigh seeds on a scale if possible (optional but recommended for the research data).</div></div>
+      <div class="step-row"><div class="step-num">6</div><div class="step-text">📷 Photograph each of the 4 grid plots from above. Label photos with session number and group name.</div></div>
+      <div class="step-row"><div class="step-num">7</div><div class="step-text">After logging all 120 seeds, click <strong>⬇ Export JSON</strong> in the top bar and upload the file to the shared team Google Drive folder.</div></div>
+      <div class="step-row"><div class="step-num">8</div><div class="step-text">The next team member to open the dashboard imports the JSON using <strong>⬆ Import JSON</strong> to stay in sync.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Experiment Milestones</div>
+    <div class="milestone"><div class="milestone-week">Session 1<br><small style="color:var(--muted)">Week 2</small></div><p>First measurement baseline. Record all starting lengths. Expect no germination yet.</p></div>
+    <div class="milestone"><div class="milestone-week">Session 2<br><small style="color:var(--muted)">Week 4</small></div><p>First germinations expected. Begin tracking germination rate differences by shade group and seed size.</p></div>
+    <div class="milestone"><div class="milestone-week">Session 3–4<br><small style="color:var(--muted)">Weeks 6–8</small></div><p>Mid-experiment. Compare size categories within each shade group. Watch for leaf emergence patterns.</p></div>
+    <div class="milestone"><div class="milestone-week">Session 5–6<br><small style="color:var(--muted)">Weeks 10–12</small></div><p>Leaf count comparisons become statistically meaningful. Document any mortality.</p></div>
+    <div class="milestone"><div class="milestone-week">Session 8<br><small style="color:var(--muted)">Week 16</small></div><p>Final measurements. Export full CSV. Begin statistical analysis. Prepare research report and graphs.</p></div>
+  </div>
+</div>
+
+</main>
+
+<div class="modal-overlay" id="seedModal">
+  <div class="modal">
+    <div class="modal-close" onclick="closeModal()">✕</div>
+    <h2 id="modalTitle">Seed Details</h2>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// ============================================================
+// ALL 120 SEEDS — exact from spreadsheet
+// Seeds 1-20: have mass without shell (explicit column)
+// Seeds 21-120: mass recorded is mass with shell (only column available)
+// Seed 120: final row in spreadsheet = 5.68g, 2.72cm, Dark green
+// ============================================================
+const RAW_SEEDS = [
+  {id:1,stage:'Closed',mass:7.57,len:2.75,color:'Dark green'},
+  {id:2,stage:'Closed',mass:6.05,len:2.75,color:'Green'},
+  {id:3,stage:'Semi open',mass:9.14,len:2.92,color:'Dark green'},
+  {id:4,stage:'Closed',mass:3.95,len:2.50,color:'Dark green'},
+  {id:5,stage:'Semi open',mass:5.06,len:2.81,color:'Dark green'},
+  {id:6,stage:'Open',mass:6.25,len:3.22,color:'Green'},
+  {id:7,stage:'Open',mass:9.26,len:3.70,color:'Green'},
+  {id:8,stage:'Closed',mass:5.87,len:3.82,color:'Green'},
+  {id:9,stage:'Closed',mass:3.28,len:2.22,color:'Dark green'},
+  {id:10,stage:'Closed',mass:3.67,len:2.16,color:'Dark green'},
+  {id:11,stage:'Closed',mass:3.59,len:2.49,color:'Dark green'},
+  {id:12,stage:'Open',mass:6.02,len:2.52,color:'Dark green'},
+  {id:13,stage:'Sprouted',mass:6.17,len:8.71,color:'Green'},
+  {id:14,stage:'Closed',mass:9.53,len:3.40,color:'Green'},
+  {id:15,stage:'Open',mass:4.06,len:2.73,color:'Green'},
+  {id:16,stage:'Closed',mass:6.28,len:2.48,color:'Dark green'},
+  {id:17,stage:'Open',mass:2.41,len:2.10,color:'Green'},
+  {id:18,stage:'Semi open',mass:6.93,len:2.99,color:'Dark green'},
+  {id:19,stage:'Closed',mass:5.49,len:2.60,color:'Dark green'},
+  {id:20,stage:'Closed',mass:4.87,len:2.30,color:'Dark green'},
+  {id:21,stage:'Open',mass:4.29,len:2.92,color:'Green'},
+  {id:22,stage:'Open',mass:3.81,len:2.40,color:'Dark green'},
+  {id:23,stage:'Open',mass:4.20,len:2.23,color:'Dark green'},
+  {id:24,stage:'Open',mass:2.95,len:2.23,color:'Dark green'},
+  {id:25,stage:'Open',mass:2.92,len:2.00,color:'Dark green'},
+  {id:26,stage:'Open',mass:3.76,len:1.92,color:'Dark green'},
+  {id:27,stage:'',mass:2.00,len:2.96,color:'Green'},
+  {id:28,stage:'',mass:4.82,len:2.10,color:'Dark green'},
+  {id:29,stage:'',mass:6.02,len:2.50,color:'Dark green'},
+  {id:30,stage:'',mass:2.53,len:1.30,color:'Green'},
+  {id:31,stage:'',mass:8.97,len:2.70,color:'Green'},
+  {id:32,stage:'',mass:6.83,len:2.60,color:'Dark green'},
+  {id:33,stage:'',mass:4.57,len:1.80,color:'Dark green'},
+  {id:34,stage:'',mass:5.50,len:2.00,color:'Green'},
+  {id:35,stage:'',mass:4.51,len:2.40,color:'Dark green'},
+  {id:36,stage:'',mass:5.34,len:1.80,color:'Dark green'},
+  {id:37,stage:'',mass:9.33,len:3.10,color:'Dark green'},
+  {id:38,stage:'',mass:4.81,len:1.65,color:'Dark green'},
+  {id:39,stage:'',mass:5.35,len:2.48,color:'Dark green'},
+  {id:40,stage:'',mass:8.32,len:2.55,color:'Green'},
+  {id:41,stage:'',mass:5.29,len:2.46,color:'Green'},
+  {id:42,stage:'',mass:5.83,len:2.54,color:'Green'},
+  {id:43,stage:'',mass:4.43,len:2.37,color:'Green'},
+  {id:44,stage:'',mass:3.19,len:2.37,color:'Green'},
+  {id:45,stage:'',mass:5.19,len:2.11,color:'Dark green'},
+  {id:46,stage:'',mass:6.63,len:2.82,color:'Dark green'},
+  {id:47,stage:'',mass:6.86,len:3.00,color:'Dark green'},
+  {id:48,stage:'',mass:4.56,len:2.23,color:'Green'},
+  {id:49,stage:'',mass:4.43,len:1.80,color:'Dark green'},
+  {id:50,stage:'',mass:4.49,len:2.34,color:'Green'},
+  {id:51,stage:'',mass:4.43,len:2.00,color:'Dark green'},
+  {id:52,stage:'',mass:5.32,len:2.56,color:'Dark green'},
+  {id:53,stage:'',mass:3.80,len:1.66,color:'Dark green'},
+  {id:54,stage:'',mass:5.16,len:2.15,color:'Dark green'},
+  {id:55,stage:'',mass:4.17,len:2.23,color:'Dark green'},
+  {id:56,stage:'',mass:4.71,len:2.20,color:'Green'},
+  {id:57,stage:'',mass:5.37,len:2.25,color:'Dark green'},
+  {id:58,stage:'',mass:5.01,len:2.71,color:'Green'},
+  {id:59,stage:'',mass:5.42,len:2.26,color:'Dark green'},
+  {id:60,stage:'',mass:3.89,len:2.56,color:'Dark green'},
+  {id:61,stage:'',mass:2.11,len:1.73,color:'Dark green'},
+  {id:62,stage:'',mass:8.25,len:3.23,color:'Dark green'},
+  {id:63,stage:'',mass:4.78,len:2.33,color:'Dark green'},
+  {id:64,stage:'',mass:7.58,len:3.20,color:'Dark green'},
+  {id:65,stage:'',mass:3.01,len:2.20,color:'Dark green'},
+  {id:66,stage:'',mass:6.10,len:3.00,color:'Green'},
+  {id:67,stage:'',mass:4.23,len:2.21,color:'Green'},
+  {id:68,stage:'',mass:4.30,len:2.11,color:'Dark green'},
+  {id:69,stage:'',mass:9.05,len:3.32,color:'Dark green'},
+  {id:70,stage:'',mass:10.54,len:3.50,color:'Dark green'},
+  {id:71,stage:'',mass:9.34,len:3.42,color:'Green'},
+  {id:72,stage:'',mass:5.29,len:2.39,color:'Dark green'},
+  {id:73,stage:'',mass:8.06,len:3.45,color:'Dark green'},
+  {id:74,stage:'',mass:5.29,len:2.68,color:'Green'},
+  {id:75,stage:'',mass:6.09,len:3.13,color:'Green'},
+  {id:76,stage:'',mass:4.95,len:2.90,color:'Dark green'},
+  {id:77,stage:'',mass:6.13,len:2.87,color:'Green'},
+  {id:78,stage:'',mass:6.25,len:3.00,color:'Dark green'},
+  {id:79,stage:'',mass:4.03,len:2.49,color:'Green'},
+  {id:80,stage:'',mass:3.58,len:2.64,color:'Green'},
+  {id:81,stage:'',mass:4.77,len:2.42,color:'Green'},
+  {id:82,stage:'',mass:3.14,len:2.86,color:'Light green'},
+  {id:83,stage:'',mass:5.05,len:2.97,color:'Green'},
+  {id:84,stage:'',mass:4.53,len:2.91,color:'Green'},
+  {id:85,stage:'',mass:7.67,len:3.50,color:'Dark green'},
+  {id:86,stage:'',mass:10.00,len:3.62,color:'Green'},
+  {id:87,stage:'',mass:12.76,len:3.74,color:'Dark green'},
+  {id:88,stage:'',mass:7.76,len:3.28,color:'Green'},
+  {id:89,stage:'',mass:9.46,len:3.37,color:'Green'},
+  {id:90,stage:'',mass:7.79,len:3.30,color:'Dark green'},
+  {id:91,stage:'',mass:6.19,len:2.79,color:'Green'},
+  {id:92,stage:'',mass:5.83,len:2.86,color:'Dark green'},
+  {id:93,stage:'',mass:7.36,len:3.25,color:'Green'},
+  {id:94,stage:'',mass:5.59,len:3.73,color:'Green'},
+  {id:95,stage:'',mass:5.21,len:3.30,color:'Dark green'},
+  {id:96,stage:'',mass:4.98,len:2.73,color:'Dark green'},
+  {id:97,stage:'',mass:5.88,len:2.61,color:'Dark green'},
+  {id:98,stage:'',mass:7.87,len:2.76,color:'Dark green'},
+  {id:99,stage:'',mass:8.04,len:3.00,color:'Dark green'},
+  {id:100,stage:'',mass:6.91,len:2.73,color:'Green'},
+  {id:101,stage:'',mass:6.43,len:3.00,color:'Green'},
+  {id:102,stage:'',mass:3.03,len:2.37,color:'Green'},
+  {id:103,stage:'',mass:5.31,len:3.00,color:'Dark green'},
+  {id:104,stage:'',mass:5.03,len:2.47,color:'Light green'},
+  {id:105,stage:'',mass:3.68,len:3.34,color:'Light green'},
+  {id:106,stage:'',mass:4.41,len:2.21,color:'Dark green'},
+  {id:107,stage:'',mass:6.29,len:3.21,color:'Dark green'},
+  {id:108,stage:'',mass:9.19,len:3.32,color:'Green'},
+  {id:109,stage:'',mass:7.85,len:3.92,color:'Dark green'},
+  {id:110,stage:'',mass:7.75,len:3.21,color:'Dark green'},
+  {id:111,stage:'',mass:8.68,len:2.92,color:'Dark green'},
+  {id:112,stage:'',mass:7.27,len:2.67,color:'Dark green'},
+  {id:113,stage:'',mass:9.25,len:3.28,color:'Dark green'},
+  {id:114,stage:'',mass:4.40,len:2.72,color:'Dark green'},
+  {id:115,stage:'',mass:4.88,len:2.32,color:'Green'},
+  {id:116,stage:'',mass:8.12,len:3.42,color:'Dark green'},
+  {id:117,stage:'',mass:7.66,len:3.12,color:'Green'},
+  {id:118,stage:'',mass:8.78,len:3.26,color:'Dark green'},
+  {id:119,stage:'',mass:5.68,len:2.72,color:'Dark green'},
+  {id:120,stage:'',mass:5.72,len:2.72,color:'Dark green'}
+];
+
+// ============================================================
+// CATEGORY BOUNDARIES — Tertile split for even distribution
+// Sorted tertile boundaries: 40 small, 40 medium, 40 large (approx)
+// Small:  ≤ 4.78g
+// Medium: 4.79–6.25g
+// Large:  > 6.25g
+// ============================================================
+const SMALL_MAX = 4.78;
+const LARGE_MIN = 6.25;
+
+function getCategory(mass) {
+  if (mass === null || mass === undefined) return 'unknown';
+  if (mass <= SMALL_MAX) return 'small';
+  if (mass <= LARGE_MIN) return 'medium';
+  return 'large';
+}
+
+// ============================================================
+// RCBD ASSIGNMENT — EXACT COUNTS
+//   30% Shade  → 10S + 10M + 10L = 30 seeds
+//   50% Shade  → 10S + 10M + 10L = 30 seeds
+//   75% Shade  → 10S + 10M + 10L = 30 seeds
+//   Control    → 10S + 11M + 9L  = 30 seeds  (dataset remainder)
+// Total: 120 seeds, 4 groups × 30
+// ============================================================
+function buildRCBD(seeds) {
+  const sizes = ['small','medium','large'];
+  const bySize = {small:[],medium:[],large:[]};
+  seeds.forEach(s => { const c = getCategory(s.mass); if (bySize[c]) bySize[c].push(s.id); });
+  // Fisher-Yates shuffle each size bucket
+  sizes.forEach(sz => {
+    const a = bySize[sz];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+  });
+  // Assign: index 0-9 → 30%, 10-19 → 50%, 20-29 → 75%, 30+ → Control
+  const assignment = {};
+  sizes.forEach(sz => {
+    bySize[sz].forEach((id, i) => {
+      if      (i <  10) assignment[id] = '30%';
+      else if (i <  20) assignment[id] = '50%';
+      else if (i <  30) assignment[id] = '75%';
+      else              assignment[id] = 'Control';
+    });
+  });
+  return assignment;
+}
+
+// STATE
+let appData = { rcbd:{}, seeds:[], weeklyLogs:{}, waterLogs:{}, lastSaved:null };
+let selectedSeedForLog = null;
+let currentGridView = 'separate';
+let charts = {};
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  loadFromStorage();
+  // Always rebuild RCBD from scratch so seed counts are always correct.
+  // The randomized assignment is regenerated each load but stays stable
+  // within a session. Team shares data via Export/Import JSON.
+  appData.rcbd = buildRCBD(RAW_SEEDS);
+  appData.seeds = RAW_SEEDS.map(s => ({ ...s, category: getCategory(s.mass), shadeGroup: appData.rcbd[s.id] || 'Control' }));
+  renderOverview();
+  renderSeedTable();
+  renderChips();
+  renderGrids();
+  renderWaterLog();
+  renderAnalytics();
+  renderLogSummary();
+}
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#mainTabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const name = tab.getAttribute('data-panel');
+      document.querySelectorAll('#mainTabs .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + name).classList.add('active');
+      if (name === 'analytics') renderAnalytics();
+      if (name === 'grids') renderGrids();
+      if (name === 'log') renderChips();
+      if (name === 'water') renderWaterLog();
+    });
+  });
+  init();
+});
+
+// ============================================================
+// STORAGE
+// ============================================================
+// ============================================================
+// SUPABASE CONFIG
+// ============================================================
+const SUPABASE_URL = 'https://socoggetfsjbyxgkzfws.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvY29nZ2V0ZnNqYnl4Z2t6ZndzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0NDc1NDksImV4cCI6MjA5MTAyMzU0OX0.0gcbli2g_RC_rRLPkrJRjFwEx5wc3iVQ96Z2-ynhwfM';
+const DB_KEY = 'main';
+
+async function sbFetch(method, body) {
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  let url = `${SUPABASE_URL}/rest/v1/research_data`;
+  const opts = { method, headers };
+  if (method === 'GET') {
+    url += `?key=eq.${DB_KEY}&select=value`;
+  }
+  if (method === 'POST') {
+    // upsert: insert or update if key already exists
+    headers['Prefer'] = 'resolution=merge-duplicates';
+    opts.body = JSON.stringify(body);
+  }
+  if (method === 'PATCH') {
+    url += `?key=eq.${DB_KEY}`;
+    opts.body = JSON.stringify(body);
+  }
+  const res = await fetch(url, opts);
+  return res;
+}
+
+async function pushToCloud() {
+  const btn = document.getElementById('pushBtn');
+  btn.textContent = '⏳ Pushing...'; btn.disabled = true;
+  try {
+    appData.lastSaved = new Date().toISOString();
+    const value = JSON.stringify(appData);
+    // Check if row exists first
+    const checkRes = await sbFetch('GET');
+    const rows = checkRes.ok ? await checkRes.json() : [];
+    let res;
+    if (rows.length > 0) {
+      // Row exists — update it
+      res = await sbFetch('PATCH', { value });
+    } else {
+      // No row yet — insert it
+      res = await sbFetch('POST', [{ key: DB_KEY, value }]);
+    }
+    if (res.ok) {
+      flashSave('☁️ Pushed to cloud!', '#16a34a');
+      save();
+    } else {
+      const err = await res.text();
+      console.error(err);
+      flashSave('⚠ Push failed', '#ef4444');
+      alert('Push failed: ' + err);
+    }
+  } catch(e) {
+    flashSave('⚠ Push failed', '#ef4444');
+    alert('Push error: ' + e.message);
+  }
+  btn.textContent = '⬆ Push Data'; btn.disabled = false;
+}
+
+async function pullFromCloud() {
+  const btn = document.getElementById('pullBtn');
+  btn.textContent = '⏳ Pulling...'; btn.disabled = true;
+  try {
+    const res = await sbFetch('GET');
+    if (res.ok) {
+      const rows = await res.json();
+      if (rows.length === 0) {
+        alert('☁️ No data in cloud yet. Log some data and Push first!');
+      } else {
+        const pulled = JSON.parse(rows[0].value);
+        appData = { ...appData, ...pulled };
+        save();
+        init();
+        flashSave('☁️ Pulled from cloud!', '#1d4ed8');
+      }
+    } else {
+      const err = await res.text();
+      console.error(err);
+      flashSave('⚠ Pull failed', '#ef4444');
+      alert('Pull failed: ' + err + '\n\nMake sure your research_data table exists in Supabase.');
+    }
+  } catch(e) {
+    flashSave('⚠ Pull failed', '#ef4444');
+    alert('Pull error: ' + e.message);
+  }
+  btn.textContent = '☁️ Pull Data'; btn.disabled = false;
+}
+
+// ============================================================
+// LOCAL STORAGE (backup + session persistence)
+// ============================================================
+function save() {
+  appData.lastSaved = new Date().toISOString();
+  try { localStorage.setItem('mangrove_yblp_v5', JSON.stringify(appData)); flashSave('✓ Saved locally', '#22c55e'); }
+  catch(e) { flashSave('⚠ Save failed','#ef4444'); }
+}
+function loadFromStorage() {
+  try { const r = localStorage.getItem('mangrove_yblp_v5'); if (r) appData = {...appData,...JSON.parse(r)}; }
+  catch(e) {}
+}
+function flashSave(msg, color) {
+  document.getElementById('saveText').textContent = msg;
+  document.getElementById('saveDot').style.background = color;
+  setTimeout(() => { document.getElementById('saveText').textContent = 'Auto-saved'; document.getElementById('saveDot').style.background = 'var(--accent)'; }, 2500);
+}
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(appData,null,2)],{type:'application/json'}));
+  a.download = `mangrove_data_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+}
+function importJSON(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = e => { try { appData = {...appData,...JSON.parse(e.target.result)}; save(); init(); alert('✅ Imported!'); } catch { alert('❌ Invalid JSON'); } };
+  r.readAsText(file);
+}
+function exportCSV() {
+  const headers = ['Seed_ID','Mass_g','Length_cm','Category','Shade_Group','Stage','Color'];
+  const sessions = [...new Set(Object.keys(appData.weeklyLogs).map(k=>k.split('_')[1]))].sort((a,b)=>+a-+b);
+  sessions.forEach(s => headers.push(`S${s}_Length`,`S${s}_Leaves`,`S${s}_Status`,`S${s}_Mass`));
+  const rows = appData.seeds.map(s => {
+    const row = [s.id,s.mass??'',s.len??'',s.category,s.shadeGroup,s.stage||'',s.color||''];
+    sessions.forEach(sess => { const e = appData.weeklyLogs[`${s.id}_${sess}`]; e?row.push(e.length||'',e.leaves||'',e.germStatus||'',e.mass||''):row.push('','','',''); });
+    return row;
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([[headers,...rows].map(r=>r.join(',')).join('\n')],{type:'text/csv'}));
+  a.download = `mangrove_data_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+
+// ============================================================
+// OVERVIEW
+// ============================================================
+function renderOverview() {
+  const small = RAW_SEEDS.filter(s => getCategory(s.mass)==='small').length;
+  const medium = RAW_SEEDS.filter(s => getCategory(s.mass)==='medium').length;
+  const large = RAW_SEEDS.filter(s => getCategory(s.mass)==='large').length;
+  const total = RAW_SEEDS.length;
+
+  document.getElementById('statSmall').textContent = small;
+  document.getElementById('statMedium').textContent = medium;
+  document.getElementById('statLarge').textContent = large;
+
+  const smallMasses = RAW_SEEDS.filter(s=>getCategory(s.mass)==='small').map(s=>s.mass);
+  const medMasses = RAW_SEEDS.filter(s=>getCategory(s.mass)==='medium').map(s=>s.mass);
+  const largeMasses = RAW_SEEDS.filter(s=>getCategory(s.mass)==='large').map(s=>s.mass);
+
+  document.getElementById('rangeSmall').textContent = `${Math.min(...smallMasses).toFixed(2)}–${Math.max(...smallMasses).toFixed(2)}g`;
+  document.getElementById('rangeMedium').textContent = `${Math.min(...medMasses).toFixed(2)}–${Math.max(...medMasses).toFixed(2)}g`;
+  document.getElementById('rangeLarge').textContent = `${Math.min(...largeMasses).toFixed(2)}–${Math.max(...largeMasses).toFixed(2)}g`;
+
+  document.getElementById('rcSmall').textContent = small + ' seeds';
+  document.getElementById('rcMedium').textContent = medium + ' seeds';
+  document.getElementById('rcLarge').textContent = large + ' seeds';
+  document.getElementById('progSmall').style.width = (small/total*100)+'%';
+  document.getElementById('progMedium').style.width = (medium/total*100)+'%';
+  document.getElementById('progLarge').style.width = (large/total*100)+'%';
+
+  // RCBD group cards
+  const counts = {Control:{s:0,m:0,l:0},['30%']:{s:0,m:0,l:0},['50%']:{s:0,m:0,l:0},['75%']:{s:0,m:0,l:0}};
+  appData.seeds.forEach(s => {
+    const g = s.shadeGroup; const c = s.category;
+    if (counts[g]) { if(c==='small') counts[g].s++; else if(c==='medium') counts[g].m++; else if(c==='large') counts[g].l++; }
+  });
+  const groupConfig = [
+    {key:'Control',label:'Control',emoji:'🟣',bg:'#f5f3ff',border:'#c4b5fd',color:'#7c3aed',note:'No shade'},
+    {key:'30%',label:'30% Shade',emoji:'🟡',bg:'#fffbeb',border:'#fde68a',color:'#d97706',note:'Light block'},
+    {key:'50%',label:'50% Shade',emoji:'🔵',bg:'#ecfeff',border:'#a5f3fc',color:'#0891b2',note:'Medium block'},
+    {key:'75%',label:'75% Shade',emoji:'🩷',bg:'#fdf2f8',border:'#f9a8d4',color:'#be185d',note:'Heavy block'},
+  ];
+  document.getElementById('rcbdGroupCards').innerHTML = groupConfig.map(g => {
+    const c = counts[g.key];
+    const tot = c.s+c.m+c.l;
+    return `<div style="padding:18px;background:${g.bg};border:2px solid ${g.border};border-radius:12px;text-align:center">
+      <div class="shade-pill" style="background:${g.bg};color:${g.color};border:1.5px solid ${g.border};margin-bottom:10px">${g.emoji} ${g.label}</div>
+      <div style="font-size:28px;font-weight:900;color:${g.color}">${tot}</div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-top:4px">seeds · ${g.note}</div>
+      <div style="font-size:11px;font-weight:700;margin-top:8px;font-family:var(--mono);color:var(--text)">${c.s}S · ${c.m}M · ${c.l}L</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// SEED TABLE
+// ============================================================
+function renderSeedTable() {
+  const search = (document.getElementById('seedSearch')?.value||'').toLowerCase();
+  const sizeF = document.getElementById('sizeFilter')?.value||'';
+  const shadeF = document.getElementById('shadeFilter')?.value||'';
+  let seeds = appData.seeds;
+  if (search) seeds = seeds.filter(s => String(s.id).includes(search));
+  if (sizeF) seeds = seeds.filter(s => s.category === sizeF);
+  if (shadeF) seeds = seeds.filter(s => s.shadeGroup === shadeF);
+  const catDot = {small:'🔵',medium:'🟢',large:'🔴',unknown:'⬜'};
+  const sc = {'Control':'shade-ctrl','30%':'shade-30','50%':'shade-50','75%':'shade-75'};
+  document.getElementById('seedTableBody').innerHTML = seeds.map(s => `<tr>
+    <td><strong style="font-family:var(--mono)">#${s.id}</strong></td>
+    <td style="font-family:var(--mono)">${s.mass!=null?s.mass+'g':'—'}</td>
+    <td style="font-family:var(--mono)">${s.len!=null?s.len+'cm':'—'}</td>
+    <td style="font-size:12px;font-weight:600">${s.stage||'—'}</td>
+    <td style="font-size:12px;font-weight:600">${s.color||'—'}</td>
+    <td><span class="badge ${s.category}">${catDot[s.category]||''} ${s.category.charAt(0).toUpperCase()+s.category.slice(1)}</span></td>
+    <td><span class="shade-pill ${sc[s.shadeGroup]||'shade-ctrl'}">${s.shadeGroup}</span></td>
+  </tr>`).join('');
+  document.getElementById('seedCount').textContent = `Showing ${seeds.length} of 120 seeds`;
+}
+function filterSeeds() { renderSeedTable(); }
+
+// ============================================================
+// RCBD GRIDS
+// ============================================================
+function setGridView(view) {
+  currentGridView = view;
+  document.getElementById('gvt-separate').classList.toggle('active', view==='separate');
+  document.getElementById('gvt-combined').classList.toggle('active', view==='combined');
+  renderGrids();
+}
+function renderGrids() {
+  const container = document.getElementById('gridContainer'); if (!container) return;
+  const groups = ['Control','30%','50%','75%'];
+  const shadeColors = {'Control':'#7c3aed','30%':'#d97706','50%':'#0891b2','75%':'#be185d'};
+  if (currentGridView === 'combined') {
+    container.innerHTML = `<div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px">ALL 120 SEEDS — COMBINED</div><div class="rcbd-grid" id="grid-all"></div>`;
+    appData.seeds.forEach(s => document.getElementById('grid-all').appendChild(createCell(s)));
+  } else {
+    container.innerHTML = groups.map(g => `<div class="shade-section">
+      <div class="shade-label">
+        <span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:800;background:${shadeColors[g]}20;color:${shadeColors[g]};border:1.5px solid ${shadeColors[g]}40">${g} Shade — ${appData.seeds.filter(s=>s.shadeGroup===g).length} seeds</span>
+        <div class="shade-line"></div>
+      </div>
+      <div class="rcbd-grid" id="grid-${g.replace('%','pct')}"></div>
+    </div>`).join('');
+    groups.forEach(g => {
+      const el = document.getElementById('grid-'+g.replace('%','pct'));
+      const groupSeeds = appData.seeds.filter(s => s.shadeGroup === g);
+      groupSeeds.forEach(s => el.appendChild(createCell(s)));
+      // Pad to nearest 10
+      const pad = (10 - groupSeeds.length % 10) % 10;
+      for (let i=0;i<pad;i++){const e=document.createElement('div');e.style.aspectRatio='1';el.appendChild(e);}
+    });
+  }
+}
+function createCell(seed) {
+  const cell = document.createElement('div');
+  cell.className = `rcbd-cell ${seed.category}-seed`;
+  const germ = Object.keys(appData.weeklyLogs).some(k=>k.startsWith(seed.id+'_')&&appData.weeklyLogs[k].germStatus==='Germinated');
+  if (germ || seed.stage==='Sprouted') cell.classList.add('germinated');
+  cell.textContent = seed.id;
+  cell.addEventListener('mouseenter', e => showTooltip(e,seed));
+  cell.addEventListener('mouseleave', () => document.getElementById('tooltip').style.display='none');
+  cell.addEventListener('click', () => openSeedModal(seed));
+  return cell;
+}
+document.addEventListener('mousemove', e => {
+  const tt = document.getElementById('tooltip');
+  if (tt.style.display==='block') { tt.style.left=Math.min(e.clientX+14,window.innerWidth-200)+'px'; tt.style.top=Math.min(e.clientY-10,window.innerHeight-200)+'px'; }
+});
+function showTooltip(e, seed) {
+  const catE = {small:'🔵',medium:'🟢',large:'🔴',unknown:'⬜'};
+  document.getElementById('tooltip').innerHTML = `<div class="t-id">Seed #${seed.id}</div>
+    <div class="t-row"><span class="t-key">Mass:</span><span class="t-val">${seed.mass!=null?seed.mass+'g':'—'}</span></div>
+    <div class="t-row"><span class="t-key">Size:</span><span class="t-val">${catE[seed.category]} ${seed.category}</span></div>
+    <div class="t-row"><span class="t-key">Group:</span><span class="t-val">${seed.shadeGroup}</span></div>
+    <div class="t-row"><span class="t-key">Stage:</span><span class="t-val">${seed.stage||'—'}</span></div>`;
+  document.getElementById('tooltip').style.display='block';
+}
+function openSeedModal(seed) {
+  const catE={small:'🔵',medium:'🟢',large:'🔴',unknown:'⬜'};
+  const allLogs=Object.keys(appData.weeklyLogs).filter(k=>k.startsWith(seed.id+'_')).sort();
+  document.getElementById('modalTitle').textContent=`Seed #${seed.id} — ${catE[seed.category]} ${seed.category.charAt(0).toUpperCase()+seed.category.slice(1)}`;
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-row"><span class="mk">Mass</span><span class="mv">${seed.mass!=null?seed.mass+'g':'—'}</span></div>
+    <div class="modal-row"><span class="mk">Length</span><span class="mv">${seed.len!=null?seed.len+'cm':'—'}</span></div>
+    <div class="modal-row"><span class="mk">Stage</span><span class="mv">${seed.stage||'—'}</span></div>
+    <div class="modal-row"><span class="mk">Color</span><span class="mv">${seed.color||'—'}</span></div>
+    <div class="modal-row"><span class="mk">Shade Group</span><span class="mv">${seed.shadeGroup}</span></div>
+    ${allLogs.length?`<div style="margin-top:16px;font-size:12px;font-weight:700;color:var(--muted)">MEASUREMENT SESSIONS</div>`+allLogs.map(k=>{const sess=k.split('_')[1];const e=appData.weeklyLogs[k];return`<div class="modal-row"><span class="mk">Session ${sess}</span><span class="mv">${e.length?e.length+'cm':''}${e.leaves?' · '+e.leaves+' leaves':''}${e.germStatus?' · '+e.germStatus:''}</span></div>`;}).join(''):`<div style="margin-top:16px;color:var(--muted);font-size:13px;font-weight:600">No sessions logged yet.</div>`}
+    <button class="btn accent" style="margin-top:16px;width:100%" onclick="goLogSeed(${seed.id})">📝 Log This Seed</button>`;
+  document.getElementById('seedModal').classList.add('open');
+}
+function closeModal() { document.getElementById('seedModal').classList.remove('open'); }
+document.addEventListener('click', e => { if(e.target.id==='seedModal') closeModal(); });
+function goLogSeed(id) { closeModal(); document.querySelector('[data-panel="log"]').click(); setTimeout(()=>{selectedSeedForLog=id;openLogForm(id);},100); }
+
+// ============================================================
+// DAILY WATER LOG
+// ============================================================
+const WATER_TASKS = [
+  {id:'w1', text:'Mix 3L salt water + 7L fresh water'},
+  {id:'w2', text:'Check salinity with FG-212 refractometer'},
+  {id:'w3', text:'Water all 4 plots evenly'},
+];
+const DAY_NAMES = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+function renderWaterLog() {
+  const week = parseInt(document.getElementById('waterWeekSelect')?.value||1);
+  const container = document.getElementById('waterLogContainer');
+  if (!container) return;
+
+  container.innerHTML = DAY_NAMES.map((day, di) => {
+    const key = `water_w${week}_d${di+1}`;
+    const entry = appData.waterLogs[key] || {};
+    const checksState = entry.checks || {};
+    const allDone = WATER_TASKS.every(t => checksState[t.id]);
+    return `
+      <div class="water-day-card ${allDone?'':''}">
+        <div class="water-date-label">${day} — Week ${week}</div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">Watering Checklist ${allDone?'✅':''}</div>
+        <div class="water-checklist">
+          ${WATER_TASKS.map(t=>`
+            <label class="water-check ${checksState[t.id]?'done':''}" onclick="toggleWaterCheck('${key}','${t.id}',this)">
+              <input type="checkbox" ${checksState[t.id]?'checked':''} onclick="event.stopPropagation()"> ${t.text}
+            </label>`).join('')}
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px">Notes (optional)</div>
+          <textarea rows="2" placeholder="Any observations today..." style="width:100%;font-size:12px" onchange="saveWaterNote('${key}',this.value)">${entry.notes||''}</textarea>
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted)">${Object.values(checksState).filter(Boolean).length}/${WATER_TASKS.length} tasks done</div>
+      </div>`;
+  }).join('');
+}
+
+function toggleWaterCheck(key, taskId, el) {
+  if (!appData.waterLogs[key]) appData.waterLogs[key] = {checks:{},notes:''};
+  const entry = appData.waterLogs[key];
+  if (!entry.checks) entry.checks = {};
+  entry.checks[taskId] = !entry.checks[taskId];
+  el.classList.toggle('done', !!entry.checks[taskId]);
+  el.querySelector('input[type=checkbox]').checked = !!entry.checks[taskId];
+  const card = el.closest('.water-day-card');
+  card.querySelector('div[style*="font-family"]').textContent = Object.values(entry.checks).filter(Boolean).length+'/'+WATER_TASKS.length+' tasks done';
+  if (WATER_TASKS.every(t => entry.checks[t.id])) {
+    card.querySelector('div[style*="font-weight:700;color:var(--text)"]').textContent = 'Watering Checklist ✅';
+  } else {
+    card.querySelector('div[style*="font-weight:700;color:var(--text)"]').textContent = 'Watering Checklist';
+  }
+  save();
+}
+
+function saveWaterNote(key, value) {
+  if (!appData.waterLogs[key]) appData.waterLogs[key] = {checks:{},notes:''};
+  appData.waterLogs[key].notes = value;
+  save();
+}
+
+// ============================================================
+// BI-WEEKLY LOG
+// ============================================================
+function renderChips() {
+  const session = document.getElementById('weekSelect')?.value||'1';
+  const groupFilter = document.getElementById('logGroupFilter')?.value||'';
+  let seeds = appData.seeds;
+  if (groupFilter) seeds = seeds.filter(s => s.shadeGroup===groupFilter);
+  const logged = seeds.filter(s => appData.weeklyLogs[`${s.id}_${session}`]).length;
+  document.getElementById('logProgress').textContent = `✅ ${logged} / ${seeds.length} logged`;
+  document.getElementById('seedChips').innerHTML = seeds.map(s => {
+    const isLogged = !!appData.weeklyLogs[`${s.id}_${session}`];
+    const isSelected = s.id === selectedSeedForLog;
+    return `<div class="chip ${s.category} ${isLogged?'logged':''} ${isSelected?'selected':''}" title="Seed ${s.id} · ${s.mass}g" onclick="selectChip(${s.id})">${s.id}</div>`;
+  }).join('');
+}
+function selectChip(seedId) { selectedSeedForLog = seedId; renderChips(); openLogForm(seedId); }
+function openLogForm(seedId) {
+  const seed = appData.seeds.find(s => s.id===seedId); if (!seed) return;
+  const session = document.getElementById('weekSelect').value;
+  const existing = appData.weeklyLogs[`${seedId}_${session}`];
+  const catE={small:'🔵',medium:'🟢',large:'🔴',unknown:'⬜'};
+  document.getElementById('logFormTitle').innerHTML=`📝 Seed #${seedId} ${catE[seed.category]} · ${seed.shadeGroup} · Session ${session}`;
+  if (existing) {
+    document.getElementById('logLength').value=existing.length||'';
+    document.getElementById('logMass').value=existing.mass||'';
+    document.getElementById('logLeaves').value=existing.leaves||'';
+    document.getElementById('logGermStatus').value=existing.germStatus||'Not germinated';
+    document.getElementById('logTreatment').value=existing.treatment||'';
+    document.getElementById('logPhotoSelect').value=existing.photo?'yes':'no';
+    document.getElementById('logNotes').value=existing.notes||'';
+    document.getElementById('logHealthy').checked=!!existing.healthy;
+  } else {
+    ['logLength','logMass','logLeaves','logTreatment','logNotes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('logGermStatus').value='Not germinated';
+    document.getElementById('logPhotoSelect').value='no';
+    document.getElementById('logHealthy').checked=false;
+  }
+  document.getElementById('viewPrevBtn').style.display = existing?'inline-flex':'none';
+  document.getElementById('logForm').classList.add('visible');
+  document.getElementById('logForm').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearLogForm() { selectedSeedForLog=null; document.getElementById('logForm').classList.remove('visible'); renderChips(); }
+function updateLogPanel() { renderChips(); if(selectedSeedForLog) openLogForm(selectedSeedForLog); }
+function saveLogEntry() {
+  if (!selectedSeedForLog) return alert('Please select a seed first!');
+  const session = document.getElementById('weekSelect').value;
+  const key = `${selectedSeedForLog}_${session}`;
+  appData.weeklyLogs[key] = {
+    seedId:selectedSeedForLog, session,
+    length:document.getElementById('logLength').value,
+    mass:document.getElementById('logMass').value,
+    leaves:document.getElementById('logLeaves').value,
+    germStatus:document.getElementById('logGermStatus').value,
+    treatment:document.getElementById('logTreatment').value,
+    photo:document.getElementById('logPhotoSelect').value==='yes',
+    notes:document.getElementById('logNotes').value,
+    healthy:document.getElementById('logHealthy').checked,
+    savedAt:new Date().toISOString()
+  };
+  save(); renderChips(); renderLogSummary();
+  document.getElementById('viewPrevBtn').style.display='inline-flex';
+}
+function viewPreviousEntry() {
+  if (!selectedSeedForLog) return;
+  const session = document.getElementById('weekSelect').value;
+  const prev = Math.max(1,+session-1);
+  const e = appData.weeklyLogs[`${selectedSeedForLog}_${prev}`];
+  if (!e) return alert(`No data for Seed #${selectedSeedForLog} in Session ${prev}.`);
+  alert(`Seed #${selectedSeedForLog} — Session ${prev}\nLength: ${e.length||'—'}cm\nLeaves: ${e.leaves||'—'}\nStatus: ${e.germStatus||'—'}\nNotes: ${e.notes||'—'}`);
+}
+function renderLogSummary() {
+  const session = document.getElementById('weekSelect')?.value||'1';
+  const entries = appData.seeds.map(s=>({seed:s,log:appData.weeklyLogs[`${s.id}_${session}`]})).filter(x=>x.log);
+  if (!entries.length) { document.getElementById('logSummaryTable').innerHTML='<p style="color:var(--muted);font-size:13px;padding:16px">No entries logged for this session yet.</p>'; return; }
+  const catE={small:'🔵',medium:'🟢',large:'🔴',unknown:'⬜'};
+  const sc={'Control':'shade-ctrl','30%':'shade-30','50%':'shade-50','75%':'shade-75'};
+  document.getElementById('logSummaryTable').innerHTML=`<table class="data-table"><thead><tr><th>Seed</th><th>Size</th><th>Group</th><th>Length</th><th>Leaves</th><th>Status</th><th>Photo</th><th>Healthy</th></tr></thead><tbody>${entries.map(({seed:s,log:e})=>`<tr>
+    <td><strong style="font-family:var(--mono)">#${s.id}</strong></td>
+    <td><span class="badge ${s.category}">${catE[s.category]} ${s.category}</span></td>
+    <td><span class="shade-pill ${sc[s.shadeGroup]||'shade-ctrl'}">${s.shadeGroup}</span></td>
+    <td style="font-family:var(--mono)">${e.length?e.length+'cm':'—'}</td>
+    <td style="font-family:var(--mono)">${e.leaves||'—'}</td>
+    <td style="font-size:12px;font-weight:600">${e.germStatus||'—'}</td>
+    <td>${e.photo?'📷':'—'}</td>
+    <td>${e.healthy?'✅':'—'}</td>
+  </tr>`).join('')}</tbody></table>`;
+}
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+function renderAnalytics() {
+  renderGerminationChart(); renderGrowthChart(); renderBySizeChart(); renderLoggedChart(); renderStatsTable();
+}
+function destroyChart(id) { if(charts[id]){charts[id].destroy();delete charts[id];} }
+const chartOpts = (yLabel) => ({
+  responsive:true,
+  plugins:{legend:{labels:{color:'#6b9077',font:{family:'Nunito',size:11,weight:'600'}}}},
+  scales:{
+    x:{ticks:{color:'#6b9077',font:{family:'JetBrains Mono',size:10}},grid:{color:'#d0e8d8'}},
+    y:{ticks:{color:'#6b9077',font:{family:'JetBrains Mono',size:10}},grid:{color:'#d0e8d8'},title:{display:true,text:yLabel,color:'#6b9077',font:{family:'Nunito',size:11}}}
+  }
+});
+function renderGerminationChart() {
+  destroyChart('germ');
+  const groups=['Control','30%','50%','75%'];
+  const counts=groups.map(g=>appData.seeds.filter(s=>s.shadeGroup===g&&Object.keys(appData.weeklyLogs).some(k=>k.startsWith(s.id+'_')&&appData.weeklyLogs[k].germStatus==='Germinated')).length);
+  charts.germ=new Chart(document.getElementById('chartGermination').getContext('2d'),{
+    type:'bar',data:{labels:groups,datasets:[{label:'Germinated',data:counts,backgroundColor:['#ede9fe','#fef3c7','#cffafe','#fdf2f8'],borderColor:['#7c3aed','#d97706','#0891b2','#be185d'],borderWidth:2,borderRadius:8}]},options:chartOpts('Count')
+  });
+}
+function renderGrowthChart() {
+  destroyChart('growth');
+  const groups=['Control','30%','50%','75%'],sessions=Array.from({length:8},(_,i)=>i+1);
+  const colors=['#7c3aed','#d97706','#0891b2','#be185d'];
+  const datasets=groups.map((g,gi)=>({
+    label:g,borderColor:colors[gi],backgroundColor:'transparent',tension:0.4,pointRadius:4,spanGaps:true,
+    data:sessions.map(s=>{const entries=appData.seeds.filter(x=>x.shadeGroup===g).map(x=>appData.weeklyLogs[`${x.id}_${s}`]).filter(e=>e&&e.length);return entries.length?+(entries.reduce((a,e)=>a+(+e.length),0)/entries.length).toFixed(2):null;})
+  }));
+  charts.growth=new Chart(document.getElementById('chartGrowth').getContext('2d'),{type:'line',data:{labels:sessions.map(s=>`S${s}`),datasets},options:chartOpts('Avg Length (cm)')});
+}
+function renderBySizeChart() {
+  destroyChart('bysize');
+  const sizes=['small','medium','large'],labels=['Small 🔵','Medium 🟢','Large 🔴'];
+  const colors=['#dbeafe','#dcfce7','#fee2e2'],borders=['#2563eb','#16a34a','#dc2626'];
+  const avgs=sizes.map(sz=>{const entries=Object.values(appData.weeklyLogs).filter(e=>{const s=appData.seeds.find(sd=>sd.id===e.seedId);return s&&s.category===sz&&e.length;});return entries.length?+(entries.reduce((a,e)=>a+(+e.length),0)/entries.length).toFixed(2):0;});
+  charts.bysize=new Chart(document.getElementById('chartBySize').getContext('2d'),{type:'bar',data:{labels,datasets:[{label:'Avg Length',data:avgs,backgroundColor:colors,borderColor:borders,borderWidth:2,borderRadius:10}]},options:chartOpts('Avg Length (cm)')});
+}
+function renderLoggedChart() {
+  destroyChart('logged');
+  const sessions=Array.from({length:8},(_,i)=>i+1);
+  const counts=sessions.map(s=>Object.keys(appData.weeklyLogs).filter(k=>k.endsWith('_'+s)).length);
+  charts.logged=new Chart(document.getElementById('chartLogged').getContext('2d'),{type:'bar',data:{labels:sessions.map(s=>`S${s}`),datasets:[{label:'Seeds Logged',data:counts,backgroundColor:'#d1fae5',borderColor:'#059669',borderWidth:2,borderRadius:8}]},options:chartOpts('Count')});
+}
+function renderStatsTable() {
+  const sizes=['small','medium','large'],labels=['Small 🔵','Medium 🟢','Large 🔴'],colors=['var(--small-color)','var(--medium-color)','var(--large-color)'];
+  const rows=sizes.map((sz,i)=>{
+    const vals=RAW_SEEDS.filter(s=>s.mass!==null&&getCategory(s.mass)===sz).map(s=>s.mass);
+    if(!vals.length) return{size:labels[i],n:0,mean:'—',sd:'—',min:'—',max:'—',color:colors[i]};
+    const mean=vals.reduce((a,v)=>a+v,0)/vals.length;
+    const sd=Math.sqrt(vals.reduce((a,v)=>a+(v-mean)**2,0)/vals.length);
+    return{size:labels[i],n:vals.length,mean:mean.toFixed(2),sd:sd.toFixed(2),min:Math.min(...vals).toFixed(2),max:Math.max(...vals).toFixed(2),color:colors[i]};
+  });
+  document.getElementById('statsTable').innerHTML=`<table class="data-table"><thead><tr><th>Category</th><th>n</th><th>Mean (g)</th><th>SD (g)</th><th>Min (g)</th><th>Max (g)</th></tr></thead><tbody>${rows.map(r=>`<tr><td style="color:${r.color};font-weight:800">${r.size}</td><td style="font-family:var(--mono)">${r.n}</td><td style="font-family:var(--mono)">${r.mean}</td><td style="font-family:var(--mono)">${r.sd}</td><td style="font-family:var(--mono)">${r.min}</td><td style="font-family:var(--mono)">${r.max}</td></tr>`).join('')}</tbody></table>`;
+}
+</script>
+</body>
+</html>
